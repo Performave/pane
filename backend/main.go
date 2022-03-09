@@ -4,20 +4,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
-	network "github.com/ericwang401/pane/services"
 	"github.com/joho/godotenv"
 )
-
-func index(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, os.Getenv("IP_V4"))
-	for name, headers := range req.Header {
-		for _, h := range headers {
-			fmt.Fprintf(w, "%v: %v\n", name, h)
-		}
-	}
-}
 
 func main() {
 	err := godotenv.Load(".env")
@@ -25,10 +14,7 @@ func main() {
 		log.Fatalf("Some error occured. Err: %s", err)
 	}
 
-	http.Handle("/", http.FileServer(http.Dir("./public")))
-	http.HandleFunc("/view-headers", index)
-
-	fmt.Println(network.FetchPublicAddresses())
+	registerRoutes()
 
 	fmt.Println("Registered routes")
 
