@@ -1,10 +1,11 @@
 import express from 'express'
+import registerRoutes from '@/routes'
+
 const app = express()
+const port = process.env.PORT || 80
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+registerRoutes(app)
 
-app.listen(80, () => {
+app.listen(port, () => {
   console.log('Webserver launched')
 })
