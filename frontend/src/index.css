@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.content {
+    @apply max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto py-12
+}
+
+.heading {
+    @apply text-3xl font-medium
+}
+
+.subheading {
+    @apply text-2xl font-semibold
+}
+
+.description {
+    @apply text-black font-medium text-sm
+}
+
+.description-title {
+    @apply description !text-gray-500 uppercase
+}
