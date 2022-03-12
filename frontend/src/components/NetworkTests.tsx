@@ -31,23 +31,32 @@ const NetworkTests = () => {
   const [testType, setTestType] = useState<string>('ping')
   const [runningTest, setRunningTest] = useState<boolean>(false)
 
-
-
   const runTest = async () => {
     setRunningTest(true)
     if (testType === 'ping') {
-      let res = await (await http.post('/run/ping', { address })).data
-      let responseArray: string[] = []
+      try {
+        let res = await (await http.post('/run/ping', { address })).data
+        let responseArray: string[] = []
 
-      res.forEach((elm: any) => {
-        responseArray.push(elm['match'][0])
-      })
+        res.forEach((elm: any) => {
+          responseArray.push(elm['match'][0])
+        })
 
-      setOutput(responseArray.join('<br>'))
+        setOutput(responseArray.join('<br>'))
+      } catch {
+        setOutput(
+          'Error sending request. Make sure you typed your address correctly or the Pane server is responding.'
+        )
+      }
     } else if (testType === 'traceroute') {
-      let res = await (await http.post('/run/traceroute', { address })).data
-
-      setOutput(res)
+      try {
+        let res = await (await http.post('/run/traceroute', { address })).data
+        setOutput(res)
+      } catch {
+        setOutput(
+          'Error sending request. Make sure you typed your address correctly or the Pane server is responding.'
+        )
+      }
     }
 
     setOutputIsVisible(true)
@@ -70,7 +79,13 @@ const NetworkTests = () => {
               setTestType(e.target.value)
             }
           />{' '}
-          <Button className='flex items-center' onClick={runTest} disabled={runningTest}>{runningTest && <Spinner className='mr-2' /> } Run</Button>
+          <Button
+            className='flex items-center'
+            onClick={runTest}
+            disabled={runningTest}
+          >
+            {runningTest && <Spinner className='mr-2' />} Run
+          </Button>
         </div>
 
         <div
