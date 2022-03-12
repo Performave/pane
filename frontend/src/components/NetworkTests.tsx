@@ -31,6 +31,8 @@ const NetworkTests = () => {
   const [testType, setTestType] = useState<string>('ping')
   const [runningTest, setRunningTest] = useState<boolean>(false)
 
+
+
   const runTest = async () => {
     setRunningTest(true)
     if (testType === 'ping') {

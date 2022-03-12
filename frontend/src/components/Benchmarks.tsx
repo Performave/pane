@@ -1,9 +1,29 @@
 import Card from '@/components/Card'
 import Button from '@/components/Button'
+import { useState } from 'react'
+import http from '@/util/http'
 
 const Benchmarks = () => {
   const statusStatistics = {
     percentage: 60,
+  }
+
+
+  const [testRunning, setTestRunning] = useState<boolean>(false)
+
+  const handleBenchmark = () => {
+    setTestRunning(true)
+    let secondsElapsed = 0
+    http({
+      method: 'get',
+      url: '/benchmark',
+      onDownloadProgress: (progressEvent) => {
+        //console.log("Loaded: " + ((progressEvent.loaded / progressEvent.total) * 100) + "%");
+        //console.log(Math.round(progressEvent.loaded * 100 / progressEvent.total))
+        console.log((progressEvent / (1024 * 1024)))
+      },
+    })
+
   }
 
   return (
@@ -61,7 +81,7 @@ const Benchmarks = () => {
               </div>
             </div>
           </div>
-          <Button className='text-center'>Run Speedtest</Button>
+          <Button className='text-center' onClick={handleBenchmark}>Run Speedtest</Button>
         </Card>
       </div>
     </div>

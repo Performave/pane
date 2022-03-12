@@ -89,4 +89,20 @@ export default class NetworkController {
 
     return await traceroute()
   }
+
+  public async speedtest() {
+    const generateData = (size: number) => {
+      let chars = 'abcdefghijklmnopqrstuvwxyz'.split('');
+      let len = chars.length;
+      let random_data = [];
+
+      while (size--) {
+          random_data.push(chars[Math.random()*len | 0]);
+      }
+
+      return random_data.join('');
+    }
+
+    return generateData(1000000 * 100) // 100 megabytes
+  }
 }
