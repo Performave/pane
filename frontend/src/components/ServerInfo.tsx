@@ -35,7 +35,7 @@ const ServerInfo = () => {
     <div className='bg-gray-50 border border-neutral-200'>
       <div className='content'>
         <h3 className='subheading'>Server Information</h3>
-        <Card className='grid grid-cols-2 mt-4'>
+        <Card className='grid md:grid-cols-2 mt-4'>
           <div className='flex flex-col space-y-5'>
             <div>
               <p className='description-title'>SERVER LOCATION</p>
@@ -58,7 +58,7 @@ const ServerInfo = () => {
               <p className='description'>{data?.client_ip}</p>
             </div>
           </div>
-          <div className='rounded relative'>
+          <div className='mt-5 md:mt-0 rounded relative'>
             {status !== 'loading' && (
               <iframe
                 title='Google Map'

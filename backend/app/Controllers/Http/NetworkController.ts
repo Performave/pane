@@ -2,6 +2,7 @@ import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { schema, rules } from "@ioc:Adonis/Core/Validator";
 import sleep from "../../../util/sleep";
 const Ping = require("ping-wrapper");
+const Traceroute = require("nodejs-traceroute");
 
 export default class NetworkController {
   public async index(ctx: HttpContextContract) {
@@ -9,7 +10,7 @@ export default class NetworkController {
     let IP_V6 = process.env.IP_V6 || "No IPV6 Set";
     let LOCATION = process.env.LOCATION || "No Location Set";
 
-    await sleep(3000)
+    await sleep(3000);
 
     return {
       ip_v4: IP_V4,
@@ -52,5 +53,40 @@ export default class NetworkController {
     };
 
     return await sendPing();
+  }
+
+  public async traceroute(ctx: HttpContextContract) {
+    const payload = await ctx.request.validate({
+      schema: schema.create({
+        address: schema.string({}, [rules.maxLength(500)]),
+      }),
+    });
+
+    const traceroute = () => {
+
+      return new Promise((resolve) => {
+        const tracer = new Traceroute();
+        let logs = []
+
+        tracer
+          .on("pid", (pid) => {
+            logs.push(`pid: ${pid}`);
+          })
+          .on("destination", (destination) => {
+            logs.push(`destination: ${destination}`);
+          })
+          .on("hop", (hop) => {
+            logs.push(`hop: ${JSON.stringify(hop)}`);
+          })
+          .on("close", (code) => {
+            logs.push(`close: code ${code}`);
+            resolve(logs.join('<br>'))
+          });
+
+        tracer.trace(payload.address);
+      });
+    };
+
+    return await traceroute()
   }
 }

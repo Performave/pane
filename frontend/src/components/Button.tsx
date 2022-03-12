@@ -6,7 +6,7 @@ interface ButtonProps {
 }
 
 const ButtonStyle = styled.button<ButtonProps>`
-  ${tw`px-4 py-1.5 rounded text-sm border font-medium transition-colors`};
+  ${tw`px-4 py-1.5 rounded text-sm border font-medium transition-colors disabled:!bg-gray-200 disabled:!border-gray-400 disabled:!text-gray-500`};
   ${(props) =>
     !props.isOutlined &&
     css<ButtonProps>`

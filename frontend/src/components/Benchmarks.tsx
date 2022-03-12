@@ -52,11 +52,11 @@ const Benchmarks = () => {
             </div>
             <div className='flex flex-col space-y-5'>
               <div>
-                <p className='description-title'>DOWNLOAD SPEED</p>
-                <p className='description'>417 Tbps</p>
+                <p className='description-title'>LATENCY</p>
+                <p className='description'>34 ms</p>
               </div>
               <div>
-                <p className='description-title'>UPLOAD SPEED</p>
+                <p className='description-title'>DOWNLOAD SPEED</p>
                 <p className='description'>578 Pbps</p>
               </div>
             </div>

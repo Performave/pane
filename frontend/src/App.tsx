@@ -38,7 +38,7 @@ function App() {
 
       <div className='content'>
         <p>Tool created by</p>
-        <h1 className='text-7xl font-semibold'>PERFORMAVE</h1>
+        <h1 className='text-4xl md:text-7xl font-semibold'>PERFORMAVE</h1>
       </div>
     </>
   )

@@ -31,3 +31,4 @@ Route.get('/info/name', async () => {
 Route.get('/info/network', 'NetworkController.index')
 
 Route.post('/run/ping', 'NetworkController.ping')
+Route.post('/run/traceroute', 'NetworkController.traceroute')
