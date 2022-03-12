@@ -38,7 +38,16 @@ function App() {
 
       <div className='content'>
         <p>Tool created by</p>
-        <h1 className='text-4xl md:text-7xl font-semibold'>PERFORMAVE</h1>
+        <h1 className='text-4xl md:text-7xl font-semibold'>
+          <a
+            href='https://performave.com'
+            target='_blank'
+            rel='noreferrer'
+          >
+            PERFORMAVE
+          </a>
+        </h1>
+        <p><a href='https://www.github.com/ericwang401/pane' className='text-blue-500' target='_blank' rel='noreferrer'>Source Code</a> | Please donate if you like this: <a className='text-blue-500' href='https://www.patreon.com/performave' target='_blank' rel='noreferrer'>Patreon</a></p>
       </div>
     </>
   )

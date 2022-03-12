@@ -1,6 +1,5 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { schema, rules } from "@ioc:Adonis/Core/Validator";
-import sleep from "../../../util/sleep";
 const Ping = require("ping-wrapper");
 const Traceroute = require("nodejs-traceroute");
 import { randomBytes } from 'crypto'
