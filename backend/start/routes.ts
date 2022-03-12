@@ -24,4 +24,8 @@ Route.get('/', async () => {
   return { hello: 'world' }
 })
 
+Route.get('/info/name', async () => {
+  return process.env.NAME || ''
+})
+
 Route.get('/info/network', 'NetworkController.index')

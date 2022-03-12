@@ -3,21 +3,51 @@
 @tailwind utilities;
 
 .content {
-    @apply max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto py-12
+  @apply max-w-4xl px-4 sm:px-6 lg:px-8 mx-auto py-12;
 }
 
 .heading {
-    @apply text-3xl font-medium
+  @apply text-3xl font-medium;
 }
 
 .subheading {
-    @apply text-2xl font-semibold
+  @apply text-2xl font-semibold;
 }
 
 .description {
-    @apply text-black font-medium text-sm
+  @apply text-black font-medium text-sm;
 }
 
 .description-title {
-    @apply description !text-gray-500 uppercase
+  @apply description !text-gray-500 uppercase;
+}
+
+@keyframes loading {
+  0% {
+    transform: skewX(-10deg) translateX(-100%);
+  }
+  100% {
+    transform: skewX(-10deg) translateX(200%);
+  }
+}
+
+.skeleton {
+  background: #eee;
+  overflow: hidden;
+}
+
+.skeleton::before {
+  content: '';
+  position: absolute;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.9),
+    transparent
+  );
+  width: 50%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  animation: loading 0.6s infinite;
 }
