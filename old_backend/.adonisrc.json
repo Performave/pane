@@ -18,18 +18,11 @@
   ],
   "providers": [
     "./providers/AppProvider",
-    "@adonisjs/core",
-    "@adonisjs/session",
-    "@adonisjs/view",
-    "@adonisjs/shield"
+    "@adonisjs/core"
   ],
   "metaFiles": [
     {
       "pattern": "public/**",
-      "reloadServer": false
-    },
-    {
-      "pattern": "resources/views/**/*.edge",
       "reloadServer": false
     }
   ],
