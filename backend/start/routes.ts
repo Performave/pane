@@ -19,9 +19,15 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import View from '@ioc:Adonis/Core/View'
 
 Route.get('/', async () => {
-  return { hello: 'world' }
+  return await View.render('home', {
+    name: process.env.NAME || 'Lookup',
+    ipv4: process.env.IP_V4 || "No IPV4 Set",
+    ipv6: process.env.IP_V6 || "No IPV6 Set",
+    location: process.env.LOCATION || "No Location Set"
+  })
 })
 
 Route.get('/info/name', async () => {

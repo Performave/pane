@@ -32,7 +32,7 @@ export default class NetworkController {
 
     const sendPing = () => {
       return new Promise((resolve, reject) => {
-        let pings = [];
+        let pings: Object[] = [];
         let count = 0;
         ping.on("ping", (res) => {
           if (count >= 5) {
@@ -65,7 +65,7 @@ export default class NetworkController {
 
       return new Promise((resolve) => {
         const tracer = new Traceroute();
-        let logs = []
+        let logs: string[] = []
 
         tracer
           .on("pid", (pid) => {
@@ -90,18 +90,6 @@ export default class NetworkController {
   }
 
   public async speedtest() {
-    const generateData = (size: number) => {
-      let chars = 'abcdefghijklmnopqrstuvwxyz'.split('');
-      let len = chars.length;
-      let random_data = [];
-
-      while (size--) {
-          random_data.push(chars[Math.random()*len | 0]);
-      }
-
-      return random_data.join('');
-    }
-
     return randomBytes(1000000 * 500) // 100 megabytes
   }
 }
