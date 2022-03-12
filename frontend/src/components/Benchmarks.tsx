@@ -1,29 +1,100 @@
 import Card from '@/components/Card'
 import Button from '@/components/Button'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import http from '@/util/http'
+import Spinner from '@/components/Spinner'
+import { StopIcon } from '@heroicons/react/outline'
+
+interface Progress {
+  time: number
+  size: number
+}
 
 const Benchmarks = () => {
-  const statusStatistics = {
-    percentage: 60,
+  const [testRunning, setTestRunning] = useState<boolean>(false)
+  const [bytesPerSecond, setBytesPerSecond] = useState<number>(0)
+  const [latency, setLatency] = useState<number>(0)
+
+  const calculateGraph = (): number => {
+    if (!testRunning) return 0
+    let Mbps = Math.floor((bytesPerSecond * 8) / 1048576)
+    if (Mbps > 100) return 100
+
+    return Mbps
+  }
+  const percentage = useMemo(calculateGraph, [bytesPerSecond, testRunning])
+
+  const progressToHuman = (bytes: number) => {
+    if (bytes === 0) return [0, 'Bit/s']
+    let bits = bytes * 8
+
+    const k = 1024
+    const sizes = [
+      'Bit/s',
+      'Kbps',
+      'Mbps',
+      'Gbps',
+      'Tbps',
+      'Pbps',
+      'Ebps',
+      'Zbps',
+      'Ybps',
+    ]
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+    return [Math.floor(bits / Math.pow(k, i)), sizes[i]]
   }
 
+  const [humanSize, humanUnit] = useMemo(
+    () => progressToHuman(bytesPerSecond),
+    [bytesPerSecond]
+  )
 
-  const [testRunning, setTestRunning] = useState<boolean>(false)
+  const [controller, setController] = useState((new AbortController()))
 
-  const handleBenchmark = () => {
+  const cancelBenchmark = () => {
+    controller.abort()
+
+    setTestRunning(false)
+    setController((new AbortController()))
+  }
+
+  const handleBenchmark = async () => {
     setTestRunning(true)
-    let secondsElapsed = 0
+
+    let time = performance.now()
+    await http.get('/benchmark/latency')
+    setLatency(Math.floor(performance.now() - time))
+
+    let startTime = new Date()
+    let progressLog: Progress[] = []
+
     http({
       method: 'get',
       url: '/benchmark',
+      signal: controller.signal,
       onDownloadProgress: (progressEvent) => {
-        //console.log("Loaded: " + ((progressEvent.loaded / progressEvent.total) * 100) + "%");
-        //console.log(Math.round(progressEvent.loaded * 100 / progressEvent.total))
-        console.log((progressEvent / (1024 * 1024)))
+        progressLog.push({
+          time: (new Date().getTime() - startTime.getTime()) / 1000, // converts MS to S
+          size: progressEvent.loaded,
+        })
+
+        if (progressLog.length > 3) progressLog.shift()
+
+        if (progressLog.length > 1) {
+          let delta = progressLog[progressLog.length - 1]
+          let x = progressLog[progressLog.length - 2]
+
+          let topDiff = delta.size - x.size
+          let bottomDiff = delta.time - x.time
+
+          setBytesPerSecond(topDiff / bottomDiff)
+        }
+
+        if (progressEvent.loaded === progressEvent.total) setTestRunning(false)
       },
     })
-
   }
 
   return (
@@ -34,8 +105,8 @@ const Benchmarks = () => {
           <div className='grid grid-cols-2 gap-4 place-items-center'>
             <div className='grid place-items-center'>
               <div className='absolute text-center'>
-                <p className='text-4xl font-bold'>250</p>
-                <p>Tbps</p>
+                <p className='text-4xl font-bold'>{humanSize}</p>
+                <p>{humanUnit}</p>
               </div>
               <svg
                 className='transform'
@@ -63,8 +134,9 @@ const Benchmarks = () => {
                   fill='transparent'
                   stroke='#0CCE6B'
                   strokeWidth='12'
+                  className='transition-all'
                   strokeDasharray={`calc(${
-                    (statusStatistics.percentage * 0.7) / 100
+                    (percentage * 0.7) / 100
                   } * 3.1416 * 116) calc(3.1416 * 116)`}
                   strokeLinecap='round'
                 />
@@ -73,15 +145,28 @@ const Benchmarks = () => {
             <div className='flex flex-col space-y-5'>
               <div>
                 <p className='description-title'>LATENCY</p>
-                <p className='description'>34 ms</p>
+                <p className='description'>{latency} ms</p>
               </div>
               <div>
                 <p className='description-title'>DOWNLOAD SPEED</p>
-                <p className='description'>578 Pbps</p>
+                <p className='description'>{humanSize + ' ' + humanUnit}</p>
               </div>
             </div>
           </div>
-          <Button className='text-center' onClick={handleBenchmark}>Run Speedtest</Button>
+          <div className='flex space-x-2'>
+            <Button
+              className='text-center flex'
+              onClick={handleBenchmark}
+              disabled={testRunning}
+            >
+              {testRunning && <Spinner className='mr-2' />} Run Speedtest
+            </Button>
+            {testRunning && (
+              <Button onClick={cancelBenchmark} isOutlined className='text-center flex'>
+                <StopIcon className='h-5 w-5' />
+              </Button>
+            )}
+          </div>
         </Card>
       </div>
     </div>

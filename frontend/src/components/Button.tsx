@@ -15,7 +15,7 @@ const ButtonStyle = styled.button<ButtonProps>`
     ${(props) =>
      props.isOutlined &&
       css<ButtonProps>`
-        ${tw`hover:bg-black hover:text-white border-white bg-white text-black`}
+        ${tw`hover:bg-black hover:text-white border-black bg-white text-black`}
       `}
 `
 

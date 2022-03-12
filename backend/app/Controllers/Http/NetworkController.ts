@@ -3,14 +3,13 @@ import { schema, rules } from "@ioc:Adonis/Core/Validator";
 import sleep from "../../../util/sleep";
 const Ping = require("ping-wrapper");
 const Traceroute = require("nodejs-traceroute");
+import { randomBytes } from 'crypto'
 
 export default class NetworkController {
   public async index(ctx: HttpContextContract) {
     let IP_V4 = process.env.IP_V4 || "No IPV4 Set";
     let IP_V6 = process.env.IP_V6 || "No IPV6 Set";
     let LOCATION = process.env.LOCATION || "No Location Set";
-
-    await sleep(3000);
 
     return {
       ip_v4: IP_V4,
@@ -103,6 +102,6 @@ export default class NetworkController {
       return random_data.join('');
     }
 
-    return generateData(1000000 * 100) // 100 megabytes
+    return randomBytes(1000000 * 500) // 100 megabytes
   }
 }
