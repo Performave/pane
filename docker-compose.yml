@@ -1,0 +1,9 @@
+version: '3'
+services:
+  web:
+    build: .
+    environment:
+      - HOST=0.0.0.0
+      - PORT=80
+    ports:
+      - 80:80
