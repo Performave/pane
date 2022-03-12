@@ -59,16 +59,18 @@ const ServerInfo = () => {
             </div>
           </div>
           <div className='rounded relative'>
-            <iframe
-              title='Google Map'
-              className='w-full h-full relative z-10'
-              id='gmap_canvas'
-              src={`https://maps.google.com/maps?q=${data?.location}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
-              frameBorder='0'
-              scrolling='no'
-              marginHeight={0}
-              marginWidth={0}
-            ></iframe>
+            {status !== 'loading' && (
+              <iframe
+                title='Google Map'
+                className='w-full h-full relative z-10'
+                id='gmap_canvas'
+                src={`https://maps.google.com/maps?q=${data?.location}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                frameBorder='0'
+                scrolling='no'
+                marginHeight={0}
+                marginWidth={0}
+              ></iframe>
+            )}
             <div className='absolute z-0 inset-0 skeleton' />
           </div>
         </Card>
