@@ -10,7 +10,7 @@ module.exports = {
       filename: 'static/js/[name].js',
       chunkFilename: 'static/js/[name].chunk.js',
     }
-    config['plugins'].shift() // remove htmlwebpack plugin
+    /* config['plugins'].shift() // remove htmlwebpack plugin
 
     config.plugins.map((plugin, i) => {
       if (
@@ -24,7 +24,7 @@ module.exports = {
           chunkFilename: 'static/css/main.css',
         }
       }
-    })
+    }) */
 
     return config
   },
