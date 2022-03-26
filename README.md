@@ -13,6 +13,8 @@ If you have not already installed Docker, please install it from [Docker.com](ht
 
 🚨 **WARNING: YOUR APP_KEY HAS TO INCLUDE UPPERCASE AND LOWERCASE LETTERS, NUMBERS, AND BE AT LEAST 15 CHARACTERS LONG. IF CONDITION NOT SATISFIED, SERVER WILL NOT START DUE TO SECURITY ERROR.**
 
+🚨 Also, Pane works only on Linux. Docker on Windows does not work even though it should (due to the different firewall on Windows).
+
 ```sh
 docker pull performave/pane:1.2
 
