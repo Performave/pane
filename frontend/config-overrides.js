@@ -10,21 +10,24 @@ module.exports = {
       filename: 'static/js/[name].js',
       chunkFilename: 'static/js/[name].chunk.js',
     }
-    /* config['plugins'].shift() // remove htmlwebpack plugin
 
-    config.plugins.map((plugin, i) => {
-      if (
-        plugin.options &&
-        plugin.options.filename &&
-        plugin.options.filename.includes('static/css')
-      ) {
-        config.plugins[i].options = {
-          ...config.plugins[i].options,
-          filename: 'static/css/main.css',
-          chunkFilename: 'static/css/main.css',
+    if (process.env.NODE_ENV !== 'development') {
+      config['plugins'].shift() // remove htmlwebpack plugin
+
+      config.plugins.map((plugin, i) => {
+        if (
+          plugin.options &&
+          plugin.options.filename &&
+          plugin.options.filename.includes('static/css')
+        ) {
+          config.plugins[i].options = {
+            ...config.plugins[i].options,
+            filename: 'static/css/main.css',
+            chunkFilename: 'static/css/main.css',
+          }
         }
-      }
-    }) */
+      })
+    }
 
     return config
   },
