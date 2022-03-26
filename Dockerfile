@@ -28,4 +28,8 @@ WORKDIR /app/backend/build
 
 RUN node ace generate:key
 
+RUN apt-get update
+
+RUN apt-get install traceroute
+
 CMD ["node", "server.js"]
