@@ -43,6 +43,7 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 ## Show your support
 
 Give a ⭐️ if this app helped you!
+
 Please donate to [my Patreon](https://www.patreon.com/performave) to help let me keep working on these amazing open-source projects!
 
 ## 📝 License
