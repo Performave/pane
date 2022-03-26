@@ -60,8 +60,13 @@ const Benchmarks = () => {
     setController((new AbortController()))
   }
 
+  const handleDownload = () => {
+    window.open(`${http.defaults.baseURL}benchmark`)
+  }
+
   const handleBenchmark = async () => {
     setTestRunning(true)
+    setBytesPerSecond(0)
 
     let time = performance.now()
     await http.get('/benchmark/latency')
@@ -166,6 +171,12 @@ const Benchmarks = () => {
                 <StopIcon className='h-5 w-5' />
               </Button>
             )}
+            <Button
+              className='text-center flex'
+              onClick={handleDownload}
+            >
+               500 MB Test File
+            </Button>
           </div>
         </Card>
       </div>

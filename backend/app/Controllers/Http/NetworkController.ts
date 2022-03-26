@@ -1,8 +1,7 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { schema, rules } from "@ioc:Adonis/Core/Validator";
-const Ping = require("ping-wrapper");
-const Traceroute = require("nodejs-traceroute");
-import { randomBytes } from 'crypto'
+import { randomBytes } from "crypto";
+const { exec } = require("child_process");
 
 export default class NetworkController {
   public async index(ctx: HttpContextContract) {
@@ -21,31 +20,22 @@ export default class NetworkController {
   public async ping(ctx: HttpContextContract) {
     const payload = await ctx.request.validate({
       schema: schema.create({
-        address: schema.string({}, [rules.maxLength(500)]),
+        address: schema.string({}, [rules.maxLength(500), rules.url()]),
       }),
     });
 
-    Ping.configure();
-
-    let ping = new Ping(payload.address);
-
     const sendPing = () => {
       return new Promise((resolve, reject) => {
-        let pings: Object[] = [];
-        let count = 0;
-        ping.on("ping", (res) => {
-          if (count >= 5) {
-            ping.stop();
-            return resolve(pings);
+        exec(`ping ${payload.address} -c 5`, (error, stdout, stderr) => {
+          if (error) {
+            reject(error.message);
+            return;
           }
-
-          pings.push(res);
-          count++;
-        });
-
-        ping.on("fail", (res) => {
-          ping.stop();
-          reject(res);
+          if (stderr) {
+            resolve(stderr);
+            return;
+          }
+          resolve(stdout);
         });
       });
     };
@@ -56,39 +46,30 @@ export default class NetworkController {
   public async traceroute(ctx: HttpContextContract) {
     const payload = await ctx.request.validate({
       schema: schema.create({
-        address: schema.string({}, [rules.maxLength(500)]),
+        address: schema.string({}, [rules.maxLength(500), rules.url()]),
       }),
     });
 
     const traceroute = () => {
-
-      return new Promise((resolve) => {
-        const tracer = new Traceroute();
-        let logs: string[] = []
-
-        tracer
-          .on("pid", (pid) => {
-            logs.push(`pid: ${pid}`);
-          })
-          .on("destination", (destination) => {
-            logs.push(`destination: ${destination}`);
-          })
-          .on("hop", (hop) => {
-            logs.push(`hop: ${JSON.stringify(hop)}`);
-          })
-          .on("close", (code) => {
-            logs.push(`close: code ${code}`);
-            resolve(logs.join('<br>'))
-          });
-
-        tracer.trace(payload.address);
+      return new Promise((resolve, reject) => {
+        exec(`traceroute ${payload.address}`, (error, stdout, stderr) => {
+          if (error) {
+            reject(error.message);
+            return;
+          }
+          if (stderr) {
+            resolve(stderr);
+            return;
+          }
+          resolve(stdout);
+        });
       });
     };
 
-    return await traceroute()
+    return await traceroute();
   }
 
   public async speedtest() {
-    return randomBytes(1000000 * 500) // 100 megabytes
+    return randomBytes(1000000 * 500); // 500 megabytes
   }
 }

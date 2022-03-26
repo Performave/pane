@@ -36,13 +36,8 @@ const NetworkTests = () => {
     if (testType === 'ping') {
       try {
         let res = await (await http.post('/run/ping', { address })).data
-        let responseArray: string[] = []
 
-        res.forEach((elm: any) => {
-          responseArray.push(elm['match'][0])
-        })
-
-        setOutput(responseArray.join('<br>'))
+        setOutput(res)
       } catch {
         setOutput(
           'Error sending request. Make sure you typed your address correctly or the Pane server is responding.'
@@ -51,6 +46,7 @@ const NetworkTests = () => {
     } else if (testType === 'traceroute') {
       try {
         let res = await (await http.post('/run/traceroute', { address })).data
+
         setOutput(res)
       } catch {
         setOutput(
@@ -108,7 +104,7 @@ const NetworkTests = () => {
           {outputIsVisible && (
             <div className='bg-black relative w-full h-full overflow-y-scroll'>
               <code
-                className='text-white block font-code px-3 py-1'
+                className='text-white block font-code px-3 py-1 whitespace-pre-line'
                 dangerouslySetInnerHTML={{ __html: output }}
               ></code>
             </div>
