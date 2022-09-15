@@ -15,8 +15,10 @@ If you have not already installed Docker, please install it from [Docker.com](ht
 
 🚨 Also, Pane works only on Linux. Docker on Windows does not work even though it should (due to the different firewall on Windows).
 
+🚨 The APP_KEY cannot contain special characters, only alphabetical characters.
+
 ```sh
-docker pull performave/pane:1.2
+docker pull performave/pane:latest
 
 docker run -d --restart unless-stopped \
 -p 80:80 \
@@ -28,7 +30,7 @@ docker run -d --restart unless-stopped \
 -e LOCATION='YOURLOCATION' \
 -e IP_V4='YOURIP (CAN BE BLANK)' \
 -e IP_V6='YOURIP (CAN BE BLANK)' \
-performave/pane:1.2
+performave/pane:latest
 ```
 
 ## Author
@@ -40,7 +42,7 @@ performave/pane:1.2
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/ericwang401/pane/issues).
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/performave/pane/issues).
 
 ## Show your support
 
@@ -51,4 +53,4 @@ Please donate to [my Patreon](https://www.patreon.com/performave) to help let me
 ## 📝 License
 
 Copyright © 2022 [Eric Wang](https://github.com/ericwang401).<br />
-This project is [MIT](https://github.com/ericwang401/pane/blob/main/LICENSE) licensed.
+This project is [MIT](https://github.com/performave/pane/blob/main/LICENSE) licensed.
