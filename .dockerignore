@@ -2,6 +2,7 @@
 /backend/node_modules
 /backend/public
 /backend/build
+/backend/.env
 
 !favicon.png
 !robots.txt
