@@ -12,7 +12,15 @@ interface Progress {
 
 const Benchmarks = () => {
   const [testRunning, setTestRunning] = useState<boolean>(false)
-  const [bytesPerSecond, setBytesPerSecond] = useState<number>(0)
+  const [bpsHistory, setBpsHistory] = useState<number[]>([])
+  const bytesPerSecond = useMemo(() => {
+      // get largest number in bps bpsHistory
+      let largest = 0
+      for (let i = 0; i < bpsHistory.length; i++) {
+        if (bpsHistory[i] > largest) largest = bpsHistory[i]
+      }
+      return largest
+  }, [bpsHistory])
   const [latency, setLatency] = useState<number>(0)
 
   const calculateGraph = (): number => {
@@ -66,7 +74,7 @@ const Benchmarks = () => {
 
   const handleBenchmark = async () => {
     setTestRunning(true)
-    setBytesPerSecond(0)
+    setBpsHistory([])
 
     let time = performance.now()
     await http.get('/benchmark/latency')
@@ -94,7 +102,13 @@ const Benchmarks = () => {
           let topDiff = delta.size - x.size
           let bottomDiff = delta.time - x.time
 
-          setBytesPerSecond(topDiff / bottomDiff)
+          setBpsHistory((old) => {
+            let newHistory = [...old, topDiff / bottomDiff]
+            // only keep last 10 values
+            if (newHistory.length > 10) newHistory.shift()
+
+            return newHistory
+          })
         }
 
         if (progressEvent.loaded === progressEvent.total) setTestRunning(false)
@@ -107,7 +121,7 @@ const Benchmarks = () => {
       <div className='content'>
         <h3 className='subheading'>Benchmarks</h3>
         <Card className='flex flex-col items-center mt-4'>
-          <div className='grid grid-cols-2 gap-4 place-items-center'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 place-items-center'>
             <div className='grid place-items-center'>
               <div className='absolute text-center'>
                 <p className='text-4xl font-bold'>{humanSize}</p>
@@ -158,7 +172,7 @@ const Benchmarks = () => {
               </div>
             </div>
           </div>
-          <div className='flex space-x-2'>
+          <div className='flex items-center flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 mt-2 sm:mt-0'>
             <Button
               className='text-center flex'
               onClick={handleBenchmark}
@@ -174,6 +188,7 @@ const Benchmarks = () => {
             <Button
               className='text-center flex'
               onClick={handleDownload}
+              isOutlined
             >
                500 MB Test File
             </Button>

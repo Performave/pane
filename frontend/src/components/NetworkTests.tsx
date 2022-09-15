@@ -3,7 +3,7 @@ import Input from '@/components/Textbox'
 import Dropdown from '@/components/Dropdown'
 import Button from '@/components/Button'
 import { ChevronDownIcon } from '@heroicons/react/outline'
-import React, { useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import http from '@/util/http'
 import Spinner from '@/components/Spinner'
 
@@ -31,7 +31,9 @@ const NetworkTests = () => {
   const [testType, setTestType] = useState<string>('ping')
   const [runningTest, setRunningTest] = useState<boolean>(false)
 
-  const runTest = async () => {
+  const runTest = async (e: FormEvent<HTMLFormElement> ) => {
+    e.preventDefault()
+
     setRunningTest(true)
     if (testType === 'ping') {
       try {
@@ -63,26 +65,30 @@ const NetworkTests = () => {
     <div className='content'>
       <h3 className='subheading'>Network Tests</h3>
       <Card className='mt-4 space-y-4'>
-        <div className='flex space-x-2'>
-          <Input
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            placeholder='Address'
-          ></Input>
-          <Dropdown
-            items={networkTestTypes}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setTestType(e.target.value)
-            }
-          />{' '}
-          <Button
-            className='flex items-center'
-            onClick={runTest}
-            disabled={runningTest}
-          >
-            {runningTest && <Spinner className='mr-2' />} Run
-          </Button>
-        </div>
+        <form onSubmit={runTest}>
+          <div className='flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2'>
+            <Input
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder='Address'
+            ></Input>
+            <Dropdown
+              items={networkTestTypes}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setTestType(e.target.value)
+              }
+            />
+            <div className='grid md:block place-items-center'>
+              <Button
+                className='flex items-center h-full'
+                disabled={runningTest}
+                type='submit'
+              >
+                {runningTest && <Spinner className='mr-2' />} Run
+              </Button>
+            </div>
+          </div>
+        </form>
 
         <div
           className={`hover:bg-gray-100 transition-all border rounded ${

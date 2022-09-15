@@ -33,7 +33,7 @@ const Dropdown = (props: DropdownProps) => {
         onChange={(...args) => callback(...args)}
         value={props.value}
         className={
-          'bg-white transition-colors border hover:border-neutral-700 border-neutral-300 text-sm outline-none rounded px-2.5 py-2  appearance-none ' +
+          'bg-white transition-colors border w-full hover:border-neutral-700 border-neutral-300 text-sm outline-none rounded px-2.5 py-2  appearance-none ' +
           props.className
         }
       >
