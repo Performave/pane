@@ -1,0 +1,9 @@
+/backend/node_modules
+/backend/.env
+/backend/public
+/backend/build
+
+/frontend/node_modules
+
+!favicon.png
+!robots.txt

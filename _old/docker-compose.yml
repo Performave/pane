@@ -1,0 +1,22 @@
+version: '3'
+services:
+  # prod:
+  #   build: .
+  #   environment:
+  #     - HOST=0.0.0.0
+  #     - PORT=80
+  #     - NODE_ENV=production
+  #     - APP_KEY=8BSXza3Qo4yMMaqD6y7zZGLDRoNYo55HQQ
+  #   tty: true
+  #   ports:
+  #     - 80:80
+  workspace:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/dev/Dockerfile
+    ports:
+      - 3000:3000
+      - 3333:3333
+    tty: true
+    volumes:
+      - .:/var/www
