@@ -7,3 +7,8 @@ services:
       - .:/var/www/
     ports:
       - 3000:3000
+    environment:
+      - NAME=big cock corp
+      - LOCATION=nueva york
+      - IP_V4=penis
+      - IP_v6=cock

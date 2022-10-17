@@ -1,8 +1,8 @@
-import Card from '@/components/Card'
-import Button from '@/components/Button'
+import Card from '@components/Card'
+import Button from '@components/Button'
 import { useMemo, useState } from 'react'
-import http from '@/util/http'
-import Spinner from '@/components/Spinner'
+import http from '@util/http'
+import Spinner from '@components/Spinner'
 import { StopIcon } from '@heroicons/react/outline'
 
 interface Progress {

@@ -1,11 +1,11 @@
-import Card from '@/components/Card'
-import Input from '@/components/Textbox'
-import Dropdown from '@/components/Dropdown'
-import Button from '@/components/Button'
+import Card from '@components/Card'
+import Input from '@components/Textbox'
+import Dropdown from '@components/Dropdown'
+import Button from '@components/Button'
 import { ChevronDownIcon } from '@heroicons/react/outline'
 import React, { FormEvent, useState } from 'react'
-import http from '@/util/http'
-import Spinner from '@/components/Spinner'
+import http from '@util/http'
+import Spinner from '@components/Spinner'
 
 const NetworkTests = () => {
   const networkTestTypes = [
