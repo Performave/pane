@@ -77,7 +77,7 @@ const Benchmarks = () => {
     setBpsHistory([])
 
     let time = performance.now()
-    await http.get('/benchmark/latency')
+    await http.get('/api/benchmark/latency')
     setLatency(Math.floor(performance.now() - time))
 
     let startTime = new Date()
@@ -85,7 +85,7 @@ const Benchmarks = () => {
 
     http({
       method: 'get',
-      url: '/benchmark',
+      url: '/api/benchmark',
       signal: controller.signal,
       onDownloadProgress: (progressEvent) => {
         progressLog.push({
